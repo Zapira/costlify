@@ -9,8 +9,8 @@ export default function Menu() {
 
     const menuItems = [
         { href: "/", icon: <LuLayoutDashboard />, label: "Dashboard" },
-        { href: "/dashboard", icon: <LuBox />, label: "Produk Saya" },
-        { href: "/dashboard/calc", icon: <LuCalculator />, label: "Kalkulator HPP" },
+        { href: "/produk-saya", icon: <LuBox />, label: "Produk Saya" },
+        { href: "/kalkulator-hpp", icon: <LuCalculator />, label: "Kalkulator HPP" },
     ];
 
     return (
