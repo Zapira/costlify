@@ -1,6 +1,7 @@
 import Footer from "@/app/_components/footer";
 import Menu from "@/app/_components/menu";
 import Navbar from "@/app/_components/navbar";
+import Content from "@/app/_components/product/content";
 
 export default function ProductLayout() {
     return (
@@ -16,7 +17,7 @@ export default function ProductLayout() {
 
                 <div>
                     <main className="max-w-7xl mx-auto p-2">
-
+                        <Content />
                     </main>
                 </div>
 
