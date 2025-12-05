@@ -59,6 +59,10 @@ export default function Content() {
                                 </div>
                             ))}
                         </div>
+                        <div className="mt-3">
+                            <label htmlFor="name_product" className="font-bold text-gray-700">Biaya Tenaga Kerja</label>
+                            <input type="text" name="name_product" id="name_product" className="w-full border rounded-md border-gray-200  flex justify-between p-4 mt-3" placeholder="Contoh: Kue Brownies" />
+                        </div>
 
                     </div>
                 </form>
