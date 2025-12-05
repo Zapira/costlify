@@ -3,7 +3,7 @@ import Menu from "@/app/_components/menu";
 import Navbar from "@/app/_components/navbar";
 import Content from "@/app/_components/product/content";
 
-export default function ProductLayout() {
+export default function ProductPage() {
     return (
         <>
             <div className="min-h-screen bg-slate-50">
