@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         source: "/produk-saya",
         destination: "/product",
       },
+      {
+        source: "/kalkulator-hpp",
+        destination: "/calculator",
+      },
     ];
   },
 };
