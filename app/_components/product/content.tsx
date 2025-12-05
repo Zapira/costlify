@@ -16,7 +16,7 @@ export default function Content() {
                         show: true,
                     }
                 ]} />
-                <ButtonCustom onClick={() => { router.push("/kalkulator") }}>
+                <ButtonCustom onClick={() => { router.push("/kalkulator-hpp") }}>
                     + Tambah Produk
                 </ButtonCustom>
             </div>
