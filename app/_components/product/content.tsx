@@ -1,11 +1,29 @@
 'use client';
+import { WriteData } from "@/app/libs/databases";
 import ButtonCustom from "../shared/buttonCustom";
 import Sort from "../shared/sort";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { IoFastFoodOutline } from "react-icons/io5";
 
 export default function Content() {
-    const router = useRouter();
+    // const router = useRouter();
+    const writeData = async () => {
+        console.log("Writing data...");
+        await WriteData("products/product1", {
+            name: "Kue Brownies",
+            production: 10,
+            cost_materials: 10000,
+            cost_labor: 10000,
+            cost_overhead: 10000,
+            hpp_per_unit: 10000,
+            selling_price: 15000,
+            profit_per_unit: 5000,
+        });
+    }
+    writeData();
+
+
+
     return (
         <div className="mt-5">
             <div className="flex gap-2 justify-between">
@@ -16,7 +34,9 @@ export default function Content() {
                         show: true,
                     }
                 ]} />
-                <ButtonCustom onClick={() => { router.push("/kalkulator-hpp") }}>
+                <ButtonCustom onClick={() => {
+                    writeData();
+                }} >
                     + Tambah Produk
                 </ButtonCustom>
             </div>
