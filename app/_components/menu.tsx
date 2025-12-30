@@ -14,7 +14,7 @@ export default function Menu() {
     ];
 
     return (
-        <div className="max-w-7xl mx-auto flex space-x-2 px-3">
+        <div className="hidden md:flex max-w-7xl mx-auto space-x-2 px-3 ">
             {menuItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
