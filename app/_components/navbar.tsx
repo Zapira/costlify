@@ -44,13 +44,13 @@ export default function Navbar() {
 
                 <div className="flex items-center space-x-3">
                     <Link
-                        href="/login"
+                        href="/auth/login   "
                         className="px-5 py-2 font-medium text-slate-600 hover:text-black hover:bg-slate-100 rounded-lg transition-colors"
                     >
                         Masuk
                     </Link>
                     <Link
-                        href="/register"
+                        href="/auth/register"
                         className="px-6 py-2 font-medium bg-black hover:bg-slate-800 text-white rounded-lg transition-colors"
                     >
                         Daftar Gratis
