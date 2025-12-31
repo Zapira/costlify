@@ -1,8 +1,17 @@
-import { child, get, ref, set } from "firebase/database"
+import { child, get, push, ref, set } from "firebase/database"
 import database from "../config/firebase";
 
-export const WriteData = (path: any, data: any) => {
-    return set(ref(database, path), data);
+export const WriteData = async (path: any, data: any) => {
+    try {
+        const newRef = push(ref(database, path), data);
+        await set(newRef, {
+            id: newRef.key,
+            ...data,
+        })
+        return { success: true };
+    } catch (error) {
+        return { success: false, error };
+    }
 }
 
 export const ReadData = async (path: any) => {

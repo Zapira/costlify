@@ -1,4 +1,6 @@
 'use client'
+import { hashPassword } from "@/app/libs/auth";
+import { WriteData } from "@/app/libs/databases";
 import Link from "next/link";
 import { useState } from "react";
 import { BsEye } from "react-icons/bs";
@@ -10,6 +12,39 @@ export default function RegisterPage() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        let validation = true;
+        if(formData.get("fullname") === "" || formData.get("email") === "" || formData.get("password") === "" || formData.get("password_confirmation") === ""){
+            validation = false;
+        }
+
+        if(validation === false){
+            alert("Data tidak valid");
+            return;
+        }
+
+        if(formData.get("password") !== formData.get("password_confirmation")){
+            alert("Password tidak sama");
+            return;
+        }
+
+        const hashedPassword = await hashPassword(formData.get("password") as string);
+
+        const postData = await WriteData("users" , {
+            fullname: formData.get("fullname"),
+            email: formData.get("email"),
+            password: hashedPassword,
+        });
+        console.log(postData);
+        if(postData.success){
+            alert("Data berhasil disimpan");
+        }else{
+            alert("Data gagal disimpan");
+        }
+    }
 
     return (
         <div className="bg-slate-50">
@@ -24,7 +59,7 @@ export default function RegisterPage() {
                             Hitung HPP & Keuntungan dengan mudah
                         </span>
                     </div>
-                    <form action="" className="flex flex-col space-y-2 w-md p-4">
+                    <form onSubmit={onSubmit} className="flex flex-col space-y-2 w-md p-4">
                         <label htmlFor="">Nama Lengkap</label>
                         <input type="text" name="fullname" id="fullname" className="border border-slate-100 p-2 rounded-lg placeholder:text-sm" placeholder="Masukkan Nama Lengkap" />
                         <label htmlFor="">Email</label>
