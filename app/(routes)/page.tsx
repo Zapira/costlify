@@ -1,3 +1,6 @@
+'use client'
+
+import AuthChecking from "../_components/auth/authChecking";
 import Content from "../_components/dashboard/content";
 import Footer from "../_components/footer";
 import Menu from "../_components/menu";
@@ -6,6 +9,7 @@ import Navbar from "../_components/navbar";
 export default function Home() {
   return (
     <>
+    <AuthChecking />
       <div className="min-h-screen bg-slate-50">
         <div className="bg-white shadow-sm border-b border-slate-200">
           <Navbar />
