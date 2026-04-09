@@ -1,5 +1,5 @@
 import { child, get, push, ref, set } from "firebase/database"
-import database from "../config/firebase";
+import database from "../../config/firebase";
 
 export const WriteData = async (path: any, data: any) => {
     try {

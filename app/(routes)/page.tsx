@@ -1,33 +1,7 @@
-'use client'
-
-import AuthChecking from "../_components/auth/authChecking";
-import Content from "../_components/dashboard/content";
-import Footer from "../_components/footer";
-import Menu from "../_components/menu";
-import Navbar from "../_components/navbar";
+import Index from "./home";
 
 export default function Home() {
   return (
-    <>
-    <AuthChecking />
-      <div className="min-h-screen bg-slate-50">
-        <div className="bg-white shadow-sm border-b border-slate-200">
-          <Navbar />
-        </div>
-
-        <div className="bg-black">
-          <Menu />
-        </div>
-
-        <div>
-          <main className="max-w-7xl mx-auto p-2">
-            <Content />
-          </main>
-        </div>
-
-      </div>
-      <Footer />
-    </>
-
-  );
+    <Index />
+  )
 }

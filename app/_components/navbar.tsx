@@ -6,10 +6,8 @@ import { CiCalculator1 } from "react-icons/ci";
 import { LuBox, LuCalculator, LuLayoutDashboard } from "react-icons/lu";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ImProfile } from "react-icons/im";
-import { RiProfileFill } from "react-icons/ri";
-import { BsPeople } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 
 
 export default function Navbar() {
@@ -51,9 +49,10 @@ export default function Navbar() {
                     </Link>
                     <Link
                         href="/auth/register"
-                        className="px-6 py-2 font-medium bg-black hover:bg-slate-800 text-white rounded-lg transition-colors"
+                        className="px-6 py-2 font-medium bg-linear-to-r from-sky-500 to-emerald-500 text-white rounded-xl transition-colors flex items-center justify-center space-x-2 hover:bg-linear-to-r hover:from-sky-600 hover:to-emerald-600"
                     >
-                        Daftar Gratis
+                        <span className="font-bold">Coba Gratis</span>
+                        <FaArrowAltCircleRight size={15} />
                     </Link>
                 </div>
             </nav>

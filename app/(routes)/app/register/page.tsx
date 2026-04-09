@@ -1,0 +1,83 @@
+'use client'
+import { RegisterHook } from "@/app/_hooks/registerHook";
+import { RegisterFormData } from "@/app/_types/authType";
+import Link from "next/link";
+import { BsEye } from "react-icons/bs";
+import { CiCalculator1 } from "react-icons/ci";
+import { FaInfoCircle } from "react-icons/fa";
+import { toast } from "sonner";
+
+export default function RegisterPage() {
+    const { register, handleSubmit, errors, onSubmit, showPassword, setShowPassword, getValues } = RegisterHook();
+
+    return (
+        <div className="bg-slate-50">
+            <div className="flex flex-col justify-center items-center space-x-2 h-screen">
+                <div className="flex flex-col space-y-2 border border-slate-50  p-8 rounded-lg items-center bg-white  shadow-lg ">
+                    <div className="bg-black p-2 rounded-lg">
+                        <CiCalculator1 size={40} className="text-white" />
+                    </div>
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-black">Costlify</h1>
+                        <span className="text-sm text-slate-500">
+                            Hitung HPP & Keuntungan dengan mudah
+                        </span>
+                    </div>
+                    <form className="flex flex-col space-y-2 w-md p-4" onSubmit={handleSubmit(onSubmit)}>
+                        {errors.root?.serverError && (
+                            <div className="flex items-center space-x-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                                <FaInfoCircle size={20} className="text-red-500" />
+                                <span>{errors.root.serverError.message}</span>
+                            </div>
+                        )}
+                        <div className="flex space-x-2 mt-3">
+                            <div className="flex flex-col space-y-2 w-full">
+                                <label htmlFor="">Nama Depan</label>
+                                <input type="text" {...register('first_name', { required: "Nama depan wajib diisi" })} id="first_name" className={`border p-2 rounded-lg w-full placeholder:text-sm ${errors.first_name ? 'border-red-500' : ''}`} placeholder="Masukkan Nama Depan" />
+                                {errors.first_name && <div className="flex items-center space-x-2 "><FaInfoCircle size={15} className="text-red-500" /> <span className="text-red-500 text-sm">{errors.first_name.message}</span></div>}
+                            </div>
+                            <div className="flex flex-col space-y-2 w-full">
+                                <label htmlFor="">Nama Belakang</label>
+                                <input type="text" {...register('last_name', { required: "Nama belakang wajib diisi" })} id="last_name" className={`border  p-2 rounded-lg w-full placeholder:text-sm ${errors.last_name ? 'border-red-500' : ''}`} placeholder="Masukkan Nama Belakang" />
+                                {errors.last_name && <div className="flex items-center space-x-2"><FaInfoCircle size={15} className="text-red-500" /> <span className="text-red-500 text-sm">{errors.last_name.message}</span></div>}
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor="">Email</label>
+                            <input type="email" {...register('email', { required: "Email wajib diisi", pattern: { value: /^\S+@\S+$/i, message: "Format email tidak valid" } })} id="email" className={`border p-2 rounded-lg w-full placeholder:text-sm ${errors.email ? 'border-red-500' : ''}`} placeholder="Masukkan Email" />
+                            {errors.email && <div className="flex items-center space-x-2 mt-2"><FaInfoCircle size={15} className="text-red-500" /> <span className="text-red-500 text-sm">{errors.email.message}</span></div>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="">Password</label>
+                            <div className="relative">
+                                <input type="password" {...register('password', { required: "Password wajib diisi", minLength: { value: 6, message: "Password minimal 6 karakter" } })} id="password" className={`border p-2 rounded-lg w-full placeholder:text-sm ${errors.password ? 'border-red-500' : ''}`} placeholder="Masukkan Password" />
+                                <BsEye size={20} className="text-black absolute right-4 top-3 cursor-pointer" />
+                            </div>
+                            {errors.password && <div className="flex items-center space-x-2 mt-2"><FaInfoCircle size={15} className="text-red-500" /> <span className="text-red-500 text-sm">{errors.password.message}</span></div>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="">Password Konfirmasi</label>
+                            <div className="relative">
+                                <input type="password" {...register('password_confirmation', {
+                                    required: "Konfirmasi password wajib diisi", validate: (value) => {
+                                        const { password } = getValues();
+                                        return password === value || "Password tidak cocok";
+                                    }
+                                })} id="password_confirmation" className={`border p-2 rounded-lg w-full placeholder:text-sm ${errors.password_confirmation ? 'border-red-500' : ''}`} placeholder="Masukkan Password Konfirmasi" />
+                                <BsEye size={20} className="text-black absolute right-4 top-3 cursor-pointer" />
+                            </div>
+                            {errors.password_confirmation && <div className="flex items-center space-x-2 mt-2"><FaInfoCircle size={15} className="text-red-500" /> <span className="text-red-500 text-sm">{errors.password_confirmation.message}</span></div>}
+                        </div>
+
+                        <div className="flex flex-col space-y-4 text-center justify-center mt-5">
+                            <button type="submit" className="bg-black text-white p-2 rounded-lg cursor-pointer">Daftar</button>
+                            <Link href="/auth/login" className="text-black hover:underline">Sudah Punya Akun?</Link>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}

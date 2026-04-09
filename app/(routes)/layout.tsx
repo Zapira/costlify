@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css"
 import ReduxProvider from "../_components/providers/reduxProvider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,16 @@ export default function RootLayout({
       >
         <ReduxProvider>
           {children}
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              style: {
+                borderRadius: "8px",
+                background: "#333",
+                color: "#fff",
+              },
+            }}
+          />
         </ReduxProvider>
       </body>
     </html>
