@@ -1,8 +1,8 @@
 // app/_services/authCheck.ts
 const authCheck = async () => {
     try {
-        const response = await fetch("/api/auth/me", {
-            credentials: 'include', // Untuk mengirim cookies
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth-check`, {
+            credentials: 'include', 
         });
         
         if (!response.ok) return null;
