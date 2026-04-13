@@ -6,6 +6,10 @@ export const registerUser = async (data: RegisterFormData) => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, data);
         return response.data;
     } catch (error) {
-        throw error;
+        if (axios.isAxiosError(error)) {
+            throw error;
+        } else {
+            throw new Error("Unexpected error");
+        }
     }
 }
