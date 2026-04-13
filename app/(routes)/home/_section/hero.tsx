@@ -1,3 +1,5 @@
+import { CgArrowRight } from "react-icons/cg";
+
 export default function Hero() {
     return (
         <section className="min-h-screen flex items-center relative overflow-hidden bg-linear-to-r from-sky-100 to-emerald-100 px-4">
@@ -22,10 +24,11 @@ export default function Hero() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-4">
-                        <button className="px-6 py-3 bg-gray-900 hover:bg-black text-white text-sm md:text-base font-semibold rounded-2xl shadow-lg transition">
-                            Mulai Hitung
+                        <button className="flex items-center cursor-pointer px-6 py-3 bg-gray-900 hover:bg-black text-white text-sm md:text-base font-semibold rounded-2xl shadow-lg transition">
+                            Mulai Hitung Sekarang
+                            <CgArrowRight size={20} className="ml-2 font-bold" />
                         </button>
-                        <button className="px-6 py-3 border border-gray-300 hover:border-gray-400 rounded-2xl text-sm md:text-base font-semibold transition">
+                        <button className="px-6 py-3 cursor-pointer border border-gray-300 hover:border-gray-400 rounded-2xl text-sm md:text-base font-semibold transition">
                             Lihat Demo
                         </button>
                     </div>
@@ -36,7 +39,7 @@ export default function Hero() {
                             <div className="w-7 h-7 bg-emerald-100 rounded-xl border-2 border-white flex items-center justify-center">📊</div>
                         </div>
                         <p className="text-gray-500">
-                            Dipercaya oleh <span className="font-semibold text-gray-700">1.284+</span>
+                            Dipercaya oleh <span className="font-semibold text-gray-700">1.284+</span> pelaku usaha Indonesia
                         </p>
                     </div>
                 </div>
