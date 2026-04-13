@@ -1,6 +1,8 @@
 import Footer from "@/app/_components/footer";
 import Navbar from "@/app/_components/navbar";
 import Hero from "./_section/hero";
+import Summary from "./_section/summary";
+import BestFeature from "./_section/bestFeature";
 
 
 export default function Index() {
@@ -12,6 +14,8 @@ export default function Index() {
                 </div>
                 <div>
                     <Hero />
+                    <Summary />
+                    <BestFeature />
                     <main className="max-w-7xl mx-auto p-2">
 
                     </main>
