@@ -1,5 +1,5 @@
-import Footer from "@/app/_components/footer";
-import Navbar from "@/app/_components/navbar";
+import Footer from "@/app/_components/shared/footer";
+import Navbar from "@/app/_components/shared/navbar";
 import Hero from "./_section/hero";
 import Summary from "./_section/summary";
 import BestFeature from "./_section/bestFeature";
