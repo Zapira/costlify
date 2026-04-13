@@ -1,12 +1,18 @@
 import { LoginFormData } from "../_types/authType";
-import api from "../_api/interceptor";
+import axios from "axios";
 
-export const loginService = async (auth: LoginFormData) => {
+export const loginService = async (data: LoginFormData) => {
     try {
-        const response = await api.post('/login', auth)
-        return response
-    } catch (error) {
-        throw error
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, data, {
+            withCredentials: true,
+        });
+        return response.data
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            throw error;
+        } else {
+            throw new Error("Unexpected error");
+        }
     }
 
 }
