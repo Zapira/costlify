@@ -1,7 +1,7 @@
 import Content from "@/app/_components/calculator/content";
-import Footer from "@/app/_components/footer";
-import Menu from "@/app/_components/menu";
-import Navbar from "@/app/_components/navbar";
+import Footer from "@/app/_components/shared/footer";
+import Menu from "@/app/_components/shared/menu";
+import Navbar from "@/app/_components/shared/navbar";
 
 export default function CalculatorPage() {
     return (
