@@ -2,8 +2,10 @@ import Content from "@/app/_components/calculator/content";
 import Footer from "@/app/_components/shared/footer";
 import Menu from "@/app/_components/shared/menu";
 import Navbar from "@/app/_components/shared/navbar";
+import DashboardHook from "@/app/_hooks/dashboardHook";
 
 export default function CalculatorPage() {
+        
     return (
             <>
                 <div className="min-h-screen bg-slate-50">
