@@ -8,8 +8,8 @@ export default function Menu() {
     const pathname = usePathname();
 
     const menuItems = [
-        { href: "/", icon: <LuLayoutDashboard />, label: "Dashboard" },
-        { href: "/produk-saya", icon: <LuBox />, label: "Produk Saya" },
+        { href: "/app/dashboard", icon: <LuLayoutDashboard />, label: "Dashboard" },
+        { href: "/app/product", icon: <LuBox />, label: "Produk Saya" },
         { href: "/kalkulator-hpp", icon: <LuCalculator />, label: "Kalkulator HPP" },
     ];
 
