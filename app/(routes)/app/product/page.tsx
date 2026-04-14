@@ -2,6 +2,7 @@ import Footer from "@/app/_components/shared/footer";
 import Menu from "@/app/_components/shared/menu";
 import Navbar from "@/app/_components/shared/navbar";
 import Content from "@/app/_components/product/content";
+import DashboardHook from "@/app/_hooks/dashboardHook";
 
 export default function ProductPage() {
     return (
