@@ -5,13 +5,14 @@ import { useEffect } from "react";
 import { LogoutService } from "../_services/logout";
 import { toast } from "sonner";
 
-export default function DashboardHook() {
+export default function useDashboardHook() {
 
-    const handlerLogout = async  () => {
-        confirm("Apakah Anda yakin ingin keluar?")
+    const handlerLogout = async () => {
+        const confirmLogout = confirm("Apakah Anda yakin ingin keluar?");
+        if (!confirmLogout) return;
+
         try {
             const response = await LogoutService();
-            console.log(response);
 
             if (response.message === "Logout successful") {
                 toast.success("Logout berhasil!");
@@ -23,14 +24,7 @@ export default function DashboardHook() {
     }
 
     useEffect(() => {
-        async function checkAuthStatus() {
-            try {
-                await AuthChecking();
-            } catch (error: unknown) {
-                console.error("Authentication check failed:", error);
-            }
-        }
-        checkAuthStatus();
+        AuthChecking();
     }, []);
 
     return {
