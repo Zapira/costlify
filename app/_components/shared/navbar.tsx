@@ -4,28 +4,29 @@ import Link from "next/link";
 import { BiMenu } from "react-icons/bi";
 import { CiCalculator1 } from "react-icons/ci";
 import { LuBox, LuCalculator, LuLayoutDashboard } from "react-icons/lu";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { FaArrowAltCircleRight } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import DashboardHook from "@/app/_hooks/dashboardHook";
+import useDashboardHook from "@/app/_hooks/dashboardHook";
+import Loader from "./ui/loader";
+import AuthContext from "@/app/_contexts/authContext";
 
 
 export default function Navbar() {
     const [openNavbar, setOpenNavbar] = useState(false);
-    const authChecking = useSelector((state: any) => state.auth);
+    const {isLoggedIn, user, loading} = useContext(AuthContext);
 
     const menuItems = [
-        { href: "/", icon: <LuLayoutDashboard />, label: "Dashboard" },
-        { href: "/produk-saya", icon: <LuBox />, label: "Produk Saya" },
+        { href: "/app/dashboard", icon: <LuLayoutDashboard />, label: "Dashboard" },
+        { href: "/app/product", icon: <LuBox />, label: "Produk Saya" },
         { href: "/kalkulator-hpp", icon: <LuCalculator />, label: "Kalkulator HPP" },
     ];
 
     const toggleNavbar = () => {
         setOpenNavbar(!openNavbar);
     };
+    const { handlerLogout } = useDashboardHook();
 
-    const { handlerLogout } = DashboardHook();
 
     return (
         <div className="max-w-7xl mx-auto px-4">
@@ -43,7 +44,7 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center space-x-3">
-                    {authChecking.isLoggedIn ? (
+                    {isLoggedIn ? (
                         <button onClick={handlerLogout}
                             className="flex items-center space-x-3 px-4 py-2 text-black rounded-lg hover:bg-slate-100 border-2 border-slate-300 hover:border-slate-400 transition-colors"
                         >
