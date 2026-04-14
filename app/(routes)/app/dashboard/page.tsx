@@ -11,7 +11,6 @@ export default function Dashboard() {
 
     return (
         <>
-            <AuthProvider >
                 <div className="min-h-screen bg-slate-50">
                     <div className="bg-white shadow-sm border-b border-slate-200">
                         <Navbar />
@@ -30,7 +29,6 @@ export default function Dashboard() {
 
                 </div>
                 <Footer />
-            </AuthProvider>
         </>
     );
 }
