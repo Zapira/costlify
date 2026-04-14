@@ -1,8 +1,8 @@
 import Footer from "@/app/_components/shared/footer";
-import Navbar from "@/app/_components/shared/navbar";
 import Hero from "./_section/hero";
 import Summary from "./_section/summary";
 import BestFeature from "./_section/bestFeature";
+import NavbarHome from "@/app/_components/shared/navbarHome";
 
 
 export default function Index() {
@@ -10,7 +10,7 @@ export default function Index() {
         <>
             <div className="min-h-screen bg-slate-50">
                 <div className="bg-white shadow-sm border-b border-slate-200">
-                    <Navbar />
+                    <NavbarHome />
                 </div>
                 <div>
                     <Hero />
