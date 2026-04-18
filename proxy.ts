@@ -14,12 +14,13 @@ export async function proxy(req: NextRequest) {
         return NextResponse.next();
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth-check`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth-check`, {
         method: "GET",
         headers: {
             Cookie: `access_token=${token}`,
         },
     });
+    console.log(res)
 
     const isValid = res.status === 200;
 

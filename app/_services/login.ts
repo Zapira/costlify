@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const loginService = async (data: LoginFormData) => {
     try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, data, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, data, {
             withCredentials: true,
         });
         return response.data
