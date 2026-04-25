@@ -46,7 +46,7 @@ export default function RegisterPage() {
 
                         <div className="flex flex-col space-y-4 text-center justify-center mt-5">
                             <button type="submit" className="bg-black text-white p-2 rounded-lg cursor-pointer">Masuk</button>
-                            <Link href="/auth/login" className="text-black hover:underline">Belum punya akun ,Daftar sekarang?</Link>
+                            <Link href="/auth/register" className="text-black hover:underline">Belum punya akun ,Daftar sekarang?</Link>
                         </div>
                     </form>
                 </div>
