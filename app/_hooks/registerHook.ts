@@ -28,10 +28,15 @@ export function RegisterHook() {
             if (axios.isAxiosError<ServerError>(error)) {
                 const status = error.response?.status;
 
-                if (status === 500) {
+                if (status === 422) {
                     setError("root.serverError", {
                         type: "server",
                         message: error.response?.data?.message || "Terjadi kesalahan pada server",
+                    });
+                }else{
+                    setError("root.serverError", {
+                        type: "server",
+                        message: "Server sedang maintenance, silakan coba lagi nanti",
                     });
                 }
             } else {
