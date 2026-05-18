@@ -3,8 +3,9 @@ import { useState } from "react";
 import ButtonCustom from "../shared/buttonCustom";
 import Sort from "../shared/sort";
 import { IoFastFoodOutline } from "react-icons/io5";
-import { DollarSign, Layers, PackagePlus, Plus, X } from "lucide-react";
+import { Layers, PackagePlus, Plus, X } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { createProduct } from "@/app/_services/productService";
 
 export default function Content() {
     const { control, register, handleSubmit, formState: { errors }, setError } = useForm({
@@ -14,9 +15,9 @@ export default function Content() {
                 {
                     name: "",
                     type: "material",
-                    unit: "kg",
-                    quantity: 0,
-                    pricePerUnit: 0,
+                    satuan: "kg",
+                    qty: 0,
+                    price: 0,
                 }
             ]
         }
@@ -31,32 +32,54 @@ export default function Content() {
         append({
             name: "",
             type: "material",
-            unit: "kg",
-            quantity: 0,
-            pricePerUnit: 0,
+            satuan: "kg",
+            qty: 0,
+            price: 0,
         });
+    }
+
+    const onSubmit = async (data: any) => {
+        try {
+            console.log("Form Data:", data);
+
+            const response = await createProduct(data);
+            console.log(response);
+        } catch (error) {
+            console.error("Error creating product:", error.response);
+        }
     }
 
     return (
         <div className="mt-5">
             <div className="flex gap-2 justify-between">
                 {showAddForm ? (
-                    <ButtonCustom onClick={() => setShowAddForm(false)} >
-                        Batal
-                    </ButtonCustom>
+                    <>
+                        <ButtonCustom onClick={() => setShowAddForm(false)} >
+                            Batal
+                        </ButtonCustom>
+
+                        <button type="submit" form="product-form" className="bg-black cursor-pointer text-white font-bold py-2 px-4 rounded">
+                            Simpan
+                        </button>
+                    </>
                 ) : (
-                    <Sort searchFeature={[
-                        {
-                            label: "Search",
-                            id: "search",
-                            show: true,
-                        }
-                    ]} />
+                    <>
+                        <Sort searchFeature={[
+                            {
+                                label: "Search",
+                                id: "search",
+                                show: true,
+                            }
+                        ]} />
+
+                        <ButtonCustom onClick={() => setShowAddForm(true)} >
+                            + Tambah Produk
+                        </ButtonCustom>
+                    </>
+
                 )}
 
-                <ButtonCustom onClick={() => setShowAddForm(true)} >
-                    + Tambah Produk
-                </ButtonCustom>
+
             </div>
             {showAddForm ? (
                 <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 mt-4">
@@ -75,7 +98,7 @@ export default function Content() {
                                 </label>
                                 <input
                                     type="text"
-
+                                    {...register("productName", { required: "Nama produk wajib diisi" })}
                                     placeholder="Contoh: Roti Tawar Premium"
                                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition text-lg"
                                 />
@@ -102,9 +125,10 @@ export default function Content() {
                             </div>
 
                             <div className="space-y-6">
-                                {fields.map((item, index) => (
-                                    <div key={item.id} className="space-y-4">
-                                        <div
+                                <form id="product-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                                    {fields.map((item, index) => (
+
+                                        <div key={item.id}
 
                                             className="group relative bg-linear-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-gray-400 transition-all duration-300 hover:shadow-xl"
                                         >
@@ -154,7 +178,7 @@ export default function Content() {
                                                         Satuan
                                                     </label>
                                                     <select
-                                                        {...register(`items.${index}.unit`)}
+                                                        {...register(`items.${index}.satuan`)}
 
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition bg-white"
                                                     >
@@ -176,7 +200,9 @@ export default function Content() {
                                                     <input
                                                         type="number"
                                                         step="0.01"
-                                                        {...register(`items.${index}.quantity`)}
+                                                        {...register(`items.${index}.qty` , {
+                                                            valueAsNumber: true,
+                                                        })}
 
                                                         placeholder="0"
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
@@ -194,7 +220,9 @@ export default function Content() {
                                                         <input
                                                             type="number"
                                                             step="0.01"
-                                                            {...register(`items.${index}.pricePerUnit`)}
+                                                            {...register(`items.${index}.price`, {
+                                                                valueAsNumber: true,
+                                                            })}
 
                                                             placeholder="0"
                                                             className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
@@ -212,8 +240,9 @@ export default function Content() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+
+                                    ))}
+                                </form>
                             </div>
                         </div>
                     </div>
