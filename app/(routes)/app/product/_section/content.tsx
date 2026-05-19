@@ -1,123 +1,99 @@
 'use client';
-import { useState } from "react";
-import ButtonCustom from "../shared/buttonCustom";
-import Sort from "../shared/sort";
-import { IoFastFoodOutline } from "react-icons/io5";
-import { Layers, PackagePlus, Plus, X } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { createProduct } from "@/app/_services/productService";
+
+import { Eye, Layers, PackagePlus, Pencil, Plus, Trash2, X } from "lucide-react";
+import ProductHook from "@/app/_hooks/productHook";
+import ButtonCustom from "@/app/_components/shared/buttonCustom";
+import Sort from "@/app/_components/shared/sort";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function Content() {
-    const { control, register, handleSubmit, formState: { errors }, setError } = useForm({
-        defaultValues: {
-            productName: "",
-            items: [
-                {
-                    name: "",
-                    type: "material",
-                    satuan: "kg",
-                    qty: 0,
-                    price: 0,
-                }
-            ]
-        }
-    });
-    const [showAddForm, setShowAddForm] = useState(false);
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: "items"
-    })
-
-    const handleAddItems = () => {
-        append({
-            name: "",
-            type: "material",
-            satuan: "kg",
-            qty: 0,
-            price: 0,
-        });
-    }
-
-    const onSubmit = async (data: any) => {
-        try {
-            console.log("Form Data:", data);
-
-            const response = await createProduct(data);
-            console.log(response);
-        } catch (error) {
-            console.error("Error creating product:", error.response);
-        }
-    }
+    const { showAddForm, setShowAddForm, handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard } = ProductHook();
 
     return (
         <div className="mt-5">
-            <div className="flex gap-2 justify-between">
+            <div className="bg-white rounded-2xl shadow-sm border-gray-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                 {showAddForm ? (
                     <>
-                        <ButtonCustom onClick={() => setShowAddForm(false)} >
+                        <ButtonCustom
+                            onClick={() => setShowAddForm(false)}
+                        >
                             Batal
                         </ButtonCustom>
-
-                        <button type="submit" form="product-form" className="bg-black cursor-pointer text-white font-bold py-2 px-4 rounded">
+                        <button
+                            type="submit"
+                            form="product-form"
+                            className="bg-black cursor-pointer text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
+                        >
                             Simpan
                         </button>
                     </>
                 ) : (
                     <>
-                        <Sort searchFeature={[
-                            {
-                                label: "Search",
-                                id: "search",
-                                show: true,
-                            }
-                        ]} />
+                        <Sort
+                            searchFeature={[
+                                {
+                                    label: "Search",
+                                    id: "search",
+                                    show: true,
+                                },
+                            ]}
+                        />
 
-                        <ButtonCustom onClick={() => setShowAddForm(true)} >
+                        <ButtonCustom
+                            onClick={() => setShowAddForm(true)}
+                        >
                             + Tambah Produk
                         </ButtonCustom>
                     </>
-
                 )}
-
-
             </div>
+
             {showAddForm ? (
-                <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 mt-4">
+                <div className="bg-linear-to-br from-gray-50 to-gray-100 mt-4 rounded-xl ">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="bg-black p-3 rounded-xl">
-                                    <PackagePlus className="w-6 h-6 text-white" />
+                                    <PackagePlus className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-black">Informasi Produk</h2>
+
+                                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">
+                                    Informasi Produk
+                                </h2>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                                     Nama Produk *
                                 </label>
+
                                 <input
                                     type="text"
-                                    {...register("productName", { required: "Nama produk wajib diisi" })}
+                                    {...register("productName", {
+                                        required: "Nama produk wajib diisi",
+                                    })}
                                     placeholder="Contoh: Roti Tawar Premium"
-                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition text-lg"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition text-base sm:text-lg"
                                 />
                             </div>
                         </div>
 
-                        {/* Item Costs Card */}
-
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
-                            <div className="flex items-center justify-between mb-6">
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                                 <div className="flex items-center gap-3">
                                     <div className="bg-black p-3 rounded-xl">
-                                        <Layers className="w-6 h-6 text-white" />
+                                        <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                     </div>
-                                    <h2 className="text-2xl font-bold text-black">Komponen Biaya</h2>
+
+                                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">
+                                        Komponen Biaya
+                                    </h2>
                                 </div>
+
                                 <button
-                                    onClick={handleAddItems}
-                                    className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition"
+                                    type="button"
+                                    onClick={handleAddItem}
+                                    className="flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition w-full sm:w-auto"
                                 >
                                     <Plus className="w-5 h-5" />
                                     Tambah Item
@@ -132,7 +108,7 @@ export default function Content() {
 
                                             className="group relative bg-linear-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-gray-400 transition-all duration-300 hover:shadow-xl"
                                         >
-                                            <div className="absolute -top-3 -left-3 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                                            <div className="absolute -top-3 -left-3 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-sm">
                                                 {index + 1}
                                             </div>
 
@@ -200,7 +176,7 @@ export default function Content() {
                                                     <input
                                                         type="number"
                                                         step="0.01"
-                                                        {...register(`items.${index}.qty` , {
+                                                        {...register(`items.${index}.qty`, {
                                                             valueAsNumber: true,
                                                         })}
 
@@ -240,7 +216,6 @@ export default function Content() {
                                                 </div>
                                             </div>
                                         </div>
-
                                     ))}
                                 </form>
                             </div>
@@ -248,42 +223,117 @@ export default function Content() {
                     </div>
                 </div>
             ) : (
-                <div className="border border-slate-200 rounded mt-5 p-6 bg-white">
-                    <div>
-                        <div className="flex  justify-between gap-2">
-                            <h2 className="font-bold ">#1 Kue Brownies</h2>
-                            <IoFastFoodOutline size={24} />
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                        {infoCard.map((item) => (
+                            <div key={item.title}>
+                                <div className="border border-slate-200 rounded-xl mt-5 p-4 sm:p-6 bg-white overflow-hidden">
+                                    <div className="flex justify-between items-center gap-3">
+                                        <div className="">
+                                            <span>{item.title}</span>
+                                            <h2 className="text-3xl font-bold text-black mt-2">{item.value}</h2>
+                                        </div>
+                                        {item.icon}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        <div className="">
                         </div>
-                        <span className="text-sm text-slate-600">Produksi: 10 unit/batch</span>
                     </div>
-                    <div className="border rounded-md border-transparent bg-gray-100 flex justify-between p-4 mt-3">
-                        <span className="text-sm ">Biaya Bahan</span>
-                        <span className="text-sm ">Rp. 10.000</span>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                        <div className="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <h2 className="text-xl font-bold text-black">
+                                        sadasdad
+                                    </h2>
+
+                                    <p className="text-sm text-slate-500 mt-1">
+                                        1 komponen biaya
+                                    </p>
+                                </div>
+
+                                <button className="text-slate-500 hover:text-black transition">
+                                    <BsThreeDotsVertical size={18} />
+                                </button>
+                            </div>
+
+                            <div className="mt-5 space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                                        <span className="text-sm text-slate-600">
+                                            Material
+                                        </span>
+                                    </div>
+
+                                    <span className="font-semibold text-black">
+                                        Rp 144
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                                        <span className="text-sm text-slate-600">
+                                            Labor
+                                        </span>
+                                    </div>
+
+                                    <span className="font-semibold text-black">
+                                        Rp 0
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                                        <span className="text-sm text-slate-600">
+                                            Overhead
+                                        </span>
+                                    </div>
+
+                                    <span className="font-semibold text-black">
+                                        Rp 0
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Divider */}
+                            <div className="border-t border-slate-200 my-5"></div>
+
+                            {/* Total */}
+                            {/* <div className="flex items-end justify-between">
+                                <div>
+                                    <span className="text-sm font-semibold text-slate-600">
+                                        Total HPP
+                                    </span>
+                                </div>
+
+                                <h1 className="text-4xl font-black text-black">
+                                    Rp 144
+                                </h1>
+                            </div> */}
+
+                            {/* Actions */}
+                            <button className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
+                                <Eye size={18} />
+                                <span className="hidden sm:block">Hitung HPP</span>
+                            </button>
+
+                            {/* Footer */}
+                            <div className="border-t border-slate-200 mt-5 pt-4">
+                                <p className="text-xs text-slate-400">
+                                    Terakhir diupdate: 19 Mei 2026
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div className="border rounded-md border-transparent bg-gray-100 flex justify-between p-4 mt-3">
-                        <span className="text-sm ">Biaya Tenaga Kerja</span>
-                        <span className="text-sm ">Rp. 10.000</span>
-                    </div>
-                    <div className="border rounded-md border-transparent bg-gray-100 flex justify-between p-4 mt-3">
-                        <span className="text-sm ">Biaya Overhead</span>
-                        <span className="text-sm ">Rp. 10.000</span>
-                    </div>
-                    <div className="border rounded-md border-blue-200 bg-blue-50 flex justify-between p-4 mt-3">
-                        <span className="text-sm font-bold text-blue-600">HPP Per Unit</span>
-                        <span className="text-sm font-bold text-blue-600">Rp. 10.000</span>
-                    </div>
-                    <div className="border rounded-md border-green-200 bg-green-50 flex justify-between p-4 mt-3">
-                        <span className="text-sm font-bold text-green-600">Harga Jual</span>
-                        <span className="text-sm font-bold text-green-600">Rp. 10.000</span>
-                    </div>
-                    <div className="border rounded-md border-purple-200 bg-purple-50 flex justify-between p-4 mt-3">
-                        <span className="text-sm font-bold text-purple-600">Profit Per Unit</span>
-                        <span className="text-sm font-bold text-purple-600">Rp. 10.000</span>
-                    </div>
-                </div>
+                </>
+
             )}
-
-
         </div>
     );
 }
