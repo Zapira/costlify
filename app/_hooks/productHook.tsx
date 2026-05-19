@@ -25,7 +25,8 @@ export default function ProductHook() {
         },
     });
 
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [page, setPage] = useState<'list' | 'add' | 'hpp'>('list');
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: "items"
@@ -49,7 +50,7 @@ export default function ProductHook() {
             if (response.status === 'success') {
                 toast.success("Produk berhasil ditambahkan!");
                 setTimeout(() => {
-                    setShowAddForm(false);
+                    setPage('list');
                 }, 1000);
             }
             return response;
@@ -108,8 +109,8 @@ export default function ProductHook() {
         fields,
         handleAddItem,
         remove,
-        showAddForm,
-        setShowAddForm,
+        page,
+        setPage,
         onSubmit,
         infoCard,
     }

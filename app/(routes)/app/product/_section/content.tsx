@@ -5,17 +5,24 @@ import ProductHook from "@/app/_hooks/productHook";
 import ButtonCustom from "@/app/_components/shared/buttonCustom";
 import Sort from "@/app/_components/shared/sort";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useState } from "react";
+import CountHpp from "./countHpp";
 
 export default function Content() {
-    const { showAddForm, setShowAddForm, handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard } = ProductHook();
+    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage } = ProductHook();
+    const [showAction, setShowAction] = useState(false);
+
+    const toggleAction = () => {
+        setShowAction(!showAction);
+    }
 
     return (
         <div className="mt-5">
             <div className="bg-white rounded-2xl shadow-sm border-gray-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                {showAddForm ? (
+                {page === 'add' ? (
                     <>
                         <ButtonCustom
-                            onClick={() => setShowAddForm(false)}
+                            onClick={() => setPage('list')}
                         >
                             Batal
                         </ButtonCustom>
@@ -40,7 +47,7 @@ export default function Content() {
                         />
 
                         <ButtonCustom
-                            onClick={() => setShowAddForm(true)}
+                            onClick={() => setPage('add')}
                         >
                             + Tambah Produk
                         </ButtonCustom>
@@ -48,7 +55,7 @@ export default function Content() {
                 )}
             </div>
 
-            {showAddForm ? (
+            {page === 'add' ? (
                 <div className="bg-linear-to-br from-gray-50 to-gray-100 mt-4 rounded-xl ">
                     <div className="lg:col-span-2 space-y-6">
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
@@ -222,6 +229,8 @@ export default function Content() {
                         </div>
                     </div>
                 </div>
+            )  : page === 'hpp' ? (
+                <CountHpp />
             ) : (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
@@ -255,10 +264,23 @@ export default function Content() {
                                     </p>
                                 </div>
 
-                                <button className="text-slate-500 hover:text-black transition">
+                                <button onClick={toggleAction} className="text-slate-500 hover:text-black transition cursor-pointer">
                                     <BsThreeDotsVertical size={18} />
                                 </button>
                             </div>
+                            <div className="relative">
+                                <div className={`absolute -top-16 right-5 bg-white border border-gray-200 rounded-lg shadow-lg p-2 ${showAction ? 'block' : 'hidden'}`}>
+                                    <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                        <Pencil size={16} />
+                                        Edit
+                                    </button>
+                                    <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                        <Trash2 size={16} />
+                                        Hapus
+                                    </button>
+                                </div>
+                            </div>
+
 
                             <div className="mt-5 space-y-3">
                                 <div className="flex items-center justify-between">
@@ -318,7 +340,7 @@ export default function Content() {
                             </div> */}
 
                             {/* Actions */}
-                            <button className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
+                            <button onClick={() => setPage('hpp')} className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
                                 <Eye size={18} />
                                 <span className="hidden sm:block">Hitung HPP</span>
                             </button>
@@ -332,7 +354,6 @@ export default function Content() {
                         </div>
                     </div>
                 </>
-
             )}
         </div>
     );
