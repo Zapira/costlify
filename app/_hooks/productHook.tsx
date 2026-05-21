@@ -3,7 +3,7 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { ProductType } from "../_types/productType";
 import { useEffect, useState } from "react";
-import { createProduct, getProducts } from "../_services/productService";
+import { createProduct, getProductById, getProducts } from "../_services/productService";
 import axios from "axios";
 import { ServerError } from "../_types/errorType";
 import { toast } from "sonner";
@@ -122,6 +122,18 @@ export default function ProductHook() {
         },
     ];
 
+    const handleOpenCountHpp = async (id: string) => {
+        setPage('hpp');
+        console.log("Open Count HPP for Product ID:", id);
+        try {
+            const response = await getProductById(id);
+            console.log("Product Details:", response);
+        } catch (error) {
+            console.error("Error fetching product details:", error);
+        }
+
+    }
+
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -139,5 +151,6 @@ export default function ProductHook() {
         infoCard,
         products,
         loading,
+        handleOpenCountHpp,
     }
 }

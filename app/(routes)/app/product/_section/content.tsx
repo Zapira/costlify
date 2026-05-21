@@ -11,7 +11,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Content() {
-    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage, products, loading } = ProductHook();
+    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp } = ProductHook();
     const [showAction, setShowAction] = useState(false);
 
     const toggleAction = () => {
@@ -295,7 +295,6 @@ export default function Content() {
                                             </div>
                                         </div>
 
-
                                         <div className="mt-5 space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
@@ -354,7 +353,7 @@ export default function Content() {
                             </div> */}
 
                                         {/* Actions */}
-                                        <button onClick={() => setPage('hpp')} className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
+                                        <button onClick={() => handleOpenCountHpp(product.id)} className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
                                             <Eye size={18} />
                                             <span className="hidden sm:block">Hitung HPP</span>
                                         </button>

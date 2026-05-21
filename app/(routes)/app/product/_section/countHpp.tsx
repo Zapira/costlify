@@ -294,7 +294,7 @@ export default function CountHpp() {
                             <input
                                 type="range"
                                 min={0}
-                                max={100}
+                                max={1000}
                                 value={margin}
                                 onChange={(e) => setMargin(Number(e.target.value))}
                                 className="w-full cursor-pointer"
