@@ -2,8 +2,8 @@
 
 import { useFieldArray, useForm } from "react-hook-form";
 import { ProductType } from "../_types/productType";
-import { useState } from "react";
-import { createProduct } from "../_services/productService";
+import { useEffect, useState } from "react";
+import { createProduct, getProducts } from "../_services/productService";
 import axios from "axios";
 import { ServerError } from "../_types/errorType";
 import { toast } from "sonner";
@@ -24,8 +24,10 @@ export default function ProductHook() {
             ],
         },
     });
+    const [products, setProducts] = useState<ProductType[]>([]);
 
     const [page, setPage] = useState<'list' | 'add' | 'hpp'>('list');
+    const [loading, setLoading] = useState(true);
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -78,6 +80,24 @@ export default function ProductHook() {
         }
     }
 
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            const response = await getProducts();
+            console.log("Fetched Products:", response);
+            if (response.message === "Product retrieved successfully") {
+                setProducts(response.data);
+            }
+
+
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }finally {
+            setLoading(false);
+        }
+    }
+
+
     const infoCard = [
         {
             icon: <div className="bg-blue-200 p-4 rounded-lg">
@@ -102,6 +122,10 @@ export default function ProductHook() {
         },
     ];
 
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
     return {
         register,
         handleSubmit,
@@ -113,5 +137,7 @@ export default function ProductHook() {
         setPage,
         onSubmit,
         infoCard,
+        products,
+        loading,
     }
 }

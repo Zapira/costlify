@@ -13,3 +13,29 @@ export const createProduct = async (productData: any) => {
         }
     }
 };
+
+export const getProducts = async () => {
+    try {
+        const response = await api.get(`/product`);
+        return response.data
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            throw error;
+        } else {
+            throw new Error("Unexpected error");
+        }
+    }
+};
+
+export const getProductById = async (id: string) => {
+    try {
+        const response = await api.get(`/product/get?id=${id}`);
+        return response.data
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            throw error;
+        } else {
+            throw new Error("Unexpected error");
+        }
+    }
+}

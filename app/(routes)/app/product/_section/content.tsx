@@ -7,9 +7,11 @@ import Sort from "@/app/_components/shared/sort";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
 import CountHpp from "./countHpp";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Content() {
-    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage } = ProductHook();
+    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage, products, loading } = ProductHook();
     const [showAction, setShowAction] = useState(false);
 
     const toggleAction = () => {
@@ -229,7 +231,7 @@ export default function Content() {
                         </div>
                     </div>
                 </div>
-            )  : page === 'hpp' ? (
+            ) : page === 'hpp' ? (
                 <CountHpp />
             ) : (
                 <>
@@ -251,83 +253,95 @@ export default function Content() {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-                        <div className="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300">
-
-                            <div className="flex items-start justify-between">
-                                <div>
-                                    <h2 className="text-xl font-bold text-black">
-                                        sadasdad
-                                    </h2>
-
-                                    <p className="text-sm text-slate-500 mt-1">
-                                        1 komponen biaya
-                                    </p>
+                        {loading ? (
+                            [...Array(3)].map((_, index) => (
+                                <div key={index} className="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                                    <Skeleton count={1} width={150} height={30} className="mb-2" />
+                                    <Skeleton count={1} width={100} height={20} className="mb-4" />
+                                    <Skeleton count={3} width={'100%'} height={20} className="mb-2" />
+                                    <Skeleton count={1} width={120} height={30} className="mt-4" />
                                 </div>
+                            ))
+                        ) : (
+                            <>
+                                {products.map((product, index) => (
+                                    <div key={index} className="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300">
 
-                                <button onClick={toggleAction} className="text-slate-500 hover:text-black transition cursor-pointer">
-                                    <BsThreeDotsVertical size={18} />
-                                </button>
-                            </div>
-                            <div className="relative">
-                                <div className={`absolute -top-16 right-5 bg-white border border-gray-200 rounded-lg shadow-lg p-2 ${showAction ? 'block' : 'hidden'}`}>
-                                    <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
-                                        <Pencil size={16} />
-                                        Edit
-                                    </button>
-                                    <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
-                                        <Trash2 size={16} />
-                                        Hapus
-                                    </button>
-                                </div>
-                            </div>
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h2 className="text-xl font-bold text-black">
+                                                    {product.productName}
+                                                </h2>
+
+                                                <p className="text-sm text-slate-500 mt-1">
+                                                    1 komponen biaya
+                                                </p>
+                                            </div>
+
+                                            <button onClick={toggleAction} className="text-slate-500 hover:text-black transition cursor-pointer">
+                                                <BsThreeDotsVertical size={18} />
+                                            </button>
+                                        </div>
+                                        <div className="relative">
+                                            <div className={`absolute -top-16 right-5 bg-white border border-gray-200 rounded-lg shadow-lg p-2 ${showAction ? 'block' : 'hidden'}`}>
+                                                <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                                    <Pencil size={16} />
+                                                    Edit
+                                                </button>
+                                                <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                                    <Trash2 size={16} />
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                        </div>
 
 
-                            <div className="mt-5 space-y-3">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
-                                        <span className="text-sm text-slate-600">
-                                            Material
-                                        </span>
-                                    </div>
+                                        <div className="mt-5 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                                                    <span className="text-sm text-slate-600">
+                                                        Material
+                                                    </span>
+                                                </div>
 
-                                    <span className="font-semibold text-black">
-                                        Rp 144
-                                    </span>
-                                </div>
+                                                <span className="font-semibold text-black">
+                                                    Rp 144
+                                                </span>
+                                            </div>
 
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
-                                        <span className="text-sm text-slate-600">
-                                            Labor
-                                        </span>
-                                    </div>
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                                                    <span className="text-sm text-slate-600">
+                                                        Labor
+                                                    </span>
+                                                </div>
 
-                                    <span className="font-semibold text-black">
-                                        Rp 0
-                                    </span>
-                                </div>
+                                                <span className="font-semibold text-black">
+                                                    Rp 0
+                                                </span>
+                                            </div>
 
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                                        <span className="text-sm text-slate-600">
-                                            Overhead
-                                        </span>
-                                    </div>
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                                                    <span className="text-sm text-slate-600">
+                                                        Overhead
+                                                    </span>
+                                                </div>
 
-                                    <span className="font-semibold text-black">
-                                        Rp 0
-                                    </span>
-                                </div>
-                            </div>
+                                                <span className="font-semibold text-black">
+                                                    Rp 0
+                                                </span>
+                                            </div>
+                                        </div>
 
-                            {/* Divider */}
-                            <div className="border-t border-slate-200 my-5"></div>
+                                        {/* Divider */}
+                                        <div className="border-t border-slate-200 my-5"></div>
 
-                            {/* Total */}
-                            {/* <div className="flex items-end justify-between">
+                                        {/* Total */}
+                                        {/* <div className="flex items-end justify-between">
                                 <div>
                                     <span className="text-sm font-semibold text-slate-600">
                                         Total HPP
@@ -339,22 +353,29 @@ export default function Content() {
                                 </h1>
                             </div> */}
 
-                            {/* Actions */}
-                            <button onClick={() => setPage('hpp')} className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
-                                <Eye size={18} />
-                                <span className="hidden sm:block">Hitung HPP</span>
-                            </button>
+                                        {/* Actions */}
+                                        <button onClick={() => setPage('hpp')} className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
+                                            <Eye size={18} />
+                                            <span className="hidden sm:block">Hitung HPP</span>
+                                        </button>
 
-                            {/* Footer */}
-                            <div className="border-t border-slate-200 mt-5 pt-4">
-                                <p className="text-xs text-slate-400">
-                                    Terakhir diupdate: 19 Mei 2026
-                                </p>
-                            </div>
-                        </div>
+                                        {/* Footer */}
+                                        <div className="border-t border-slate-200 mt-5 pt-4">
+                                            <p className="text-xs text-slate-400">
+                                                Terakhir diupdate: 19 Mei 2026
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+
+                        )}
+
+
                     </div>
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }
