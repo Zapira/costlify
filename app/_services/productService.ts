@@ -29,7 +29,7 @@ export const getProducts = async () => {
 
 export const getProductById = async (id: string) => {
     try {
-        const response = await api.get(`/product/get?id=${id}`);
+        const response = await api.get(`/product/${id}`);
         return response.data
     } catch (error: unknown) {
         if (axios.isAxiosError(error)) {

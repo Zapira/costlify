@@ -13,25 +13,26 @@ export default function ProductHook() {
     const { control, register, handleSubmit, formState: { errors }, setError } = useForm<ProductType>({
         defaultValues: {
             productName: "",
-            items: [
+            costs: [
                 {
                     name: "",
-                    type: "",
-                    satuan: "",
+                    type: "material",
+                    satuan: "kg",
                     qty: 0,
                     price: 0,
-                },
+                }
             ],
         },
     });
     const [products, setProducts] = useState<ProductType[]>([]);
+    const [detailProduct, setDetailProduct] = useState<ProductType | null>(null);
 
     const [page, setPage] = useState<'list' | 'add' | 'hpp'>('list');
     const [loading, setLoading] = useState(true);
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "items"
+        name: "costs",
     })
 
     const handleAddItem = () => {
@@ -97,7 +98,6 @@ export default function ProductHook() {
         }
     }
 
-
     const infoCard = [
         {
             icon: <div className="bg-blue-200 p-4 rounded-lg">
@@ -128,11 +128,15 @@ export default function ProductHook() {
         try {
             const response = await getProductById(id);
             console.log("Product Details:", response);
+            if (response.message = 'Product retrieved successfully') {
+                setDetailProduct(response.data);
+            }
         } catch (error) {
             console.error("Error fetching product details:", error);
         }
 
     }
+    
 
     useEffect(() => {
         fetchProducts();
@@ -152,5 +156,6 @@ export default function ProductHook() {
         products,
         loading,
         handleOpenCountHpp,
+        detailProduct,
     }
 }

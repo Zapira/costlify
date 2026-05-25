@@ -11,7 +11,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Content() {
-    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp } = ProductHook();
+    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp, detailProduct } = ProductHook();
     const [showAction, setShowAction] = useState(false);
 
     const toggleAction = () => {
@@ -112,9 +112,7 @@ export default function Content() {
                             <div className="space-y-6">
                                 <form id="product-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                     {fields.map((item, index) => (
-
                                         <div key={item.id}
-
                                             className="group relative bg-linear-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-gray-400 transition-all duration-300 hover:shadow-xl"
                                         >
                                             <div className="absolute -top-3 -left-3 bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-sm">
@@ -138,7 +136,9 @@ export default function Content() {
                                                     </label>
                                                     <input
                                                         type="text"
-                                                        {...register(`items.${index}.name`)}
+                                                        {...register(`costs.${index}.name`, {
+                                                            required: "Nama item wajib diisi",
+                                                        })}
                                                         placeholder="Contoh: Tepung Terigu"
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
                                                     />
@@ -149,7 +149,9 @@ export default function Content() {
                                                         Tipe
                                                     </label>
                                                     <select
-                                                        {...register(`items.${index}.type`)}
+                                                        {...register(`costs.${index}.type`, {
+                                                            required: "Tipe item wajib diisi",
+                                                        })}
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition bg-white"
                                                     >
                                                         <option value="material">Material</option>
@@ -163,7 +165,9 @@ export default function Content() {
                                                         Satuan
                                                     </label>
                                                     <select
-                                                        {...register(`items.${index}.satuan`)}
+                                                        {...register(`costs.${index}.satuan`, {
+                                                            required: "Satuan item wajib diisi",
+                                                        })}
 
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition bg-white"
                                                     >
@@ -185,8 +189,9 @@ export default function Content() {
                                                     <input
                                                         type="number"
                                                         step="0.01"
-                                                        {...register(`items.${index}.qty`, {
+                                                        {...register(`costs.${index}.qty`, {
                                                             valueAsNumber: true,
+                                                            required: "Jumlah item wajib diisi",
                                                         })}
 
                                                         placeholder="0"
@@ -205,8 +210,9 @@ export default function Content() {
                                                         <input
                                                             type="number"
                                                             step="0.01"
-                                                            {...register(`items.${index}.price`, {
+                                                            {...register(`costs.${index}.price`, {
                                                                 valueAsNumber: true,
+                                                                required: "Harga item wajib diisi",
                                                             })}
 
                                                             placeholder="0"
@@ -232,7 +238,7 @@ export default function Content() {
                     </div>
                 </div>
             ) : page === 'hpp' ? (
-                <CountHpp />
+                <CountHpp detailProduct={detailProduct} />
             ) : (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
@@ -367,10 +373,7 @@ export default function Content() {
                                     </div>
                                 ))}
                             </>
-
                         )}
-
-
                     </div>
                 </>
             )

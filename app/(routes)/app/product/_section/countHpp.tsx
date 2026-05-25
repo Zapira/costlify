@@ -9,53 +9,39 @@ import {
     Calculator,
     BadgeDollarSign
 } from "lucide-react";
+import { ProductType } from "@/app/_types/productType";
 
-export default function CountHpp() {
+
+export default function CountHpp({ detailProduct }: { detailProduct: ProductType | null }) {
+
 
     const [mode, setMode] = useState<'auto' | 'manual'>('auto');
     const [margin, setMargin] = useState(30);
-    const [typedText, setTypedText] = useState('');
-    const [manualPrice, setManualPrice] = useState(0);
 
     const fullText =
         "Hitung HPP membantu menentukan harga jual ideal berdasarkan total biaya produksi, jumlah hasil produksi, dan margin keuntungan.";
 
-    useEffect(() => {
-        let index = 0;
+    console.log("Detail Product in CountHpp:", detailProduct);
 
-        const interval = setInterval(() => {
-            setTypedText(fullText.slice(0, index));
-            index++;
+    let totalCost = 0;
 
-            if (index > fullText.length) {
-                clearInterval(interval);
-            }
-        }, 20);
 
-        return () => clearInterval(interval);
-    }, []);
+    if (detailProduct) {
+        totalCost = (detailProduct.costs ?? []).reduce((costAcc, item) => {
+            return costAcc + (item.total ?? 0);
+        }, 0);
+    }
 
-    /**
-     * STATIC DATA
-     */
-    const totalModal = 120000;
-    const totalProduction = 100;
+    const mappingNewData = (detailProduct?.costs ?? []).map((item) => ({
+        name: item.name,
+        type: item.type,
+        satuan: item.satuan,
+        qty: item.qty,
+        price: item.price,
+        total: item.total,
+    }));
 
-    /**
-     * HPP
-     */
-    const hppPerProduct = totalModal / totalProduction;
-
-    /**
-     * AUTO PRICE
-     */
-    const autoPrice =
-        hppPerProduct + (hppPerProduct * margin / 100);
-
-    /**
-     * MANUAL PROFIT
-     */
-    const manualProfit = manualPrice - hppPerProduct;
+    console.log("Mapped Items for HPP Calculation:", mappingNewData);
 
     return (
         <div className="bg-linear-to-br from-gray-50 to-gray-100 mt-4 rounded-xl p-2 sm:p-4">
@@ -89,7 +75,7 @@ export default function CountHpp() {
 
                     <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 mt-5 border border-white/10">
                         <p className="text-sm sm:text-base text-gray-100 leading-relaxed min-h-[60px]">
-                            {typedText}
+                            {fullText}
                             <span className="animate-pulse">|</span>
                         </p>
                     </div>
@@ -158,7 +144,7 @@ export default function CountHpp() {
                         </p>
 
                         <h2 className="text-2xl font-black mt-2">
-                            Rp {totalModal.toLocaleString('id-ID')}
+                            Rp
                         </h2>
 
                         <p className="text-xs text-gray-400 mt-2 leading-relaxed">
@@ -173,7 +159,7 @@ export default function CountHpp() {
                         </p>
 
                         <h2 className="text-3xl font-black mt-2">
-                            Rp {hppPerProduct.toLocaleString('id-ID')}
+                            Rp
                         </h2>
 
                         <p className="text-xs text-gray-400 mt-2">
@@ -194,7 +180,7 @@ export default function CountHpp() {
                             </p>
 
                             <h2 className="text-3xl font-black mt-1">
-                                {totalProduction} pcs
+                                pcs
                             </h2>
                         </div>
 
@@ -311,7 +297,7 @@ export default function CountHpp() {
                                 </p>
 
                                 <h2 className="text-2xl font-black mt-2">
-                                    Rp {hppPerProduct.toLocaleString('id-ID')}
+                                    Rp
                                 </h2>
 
                             </div>
@@ -335,7 +321,7 @@ export default function CountHpp() {
                                 </p>
 
                                 <h2 className="text-3xl font-black mt-2">
-                                    Rp {autoPrice.toLocaleString('id-ID')}
+                                    Rp
                                 </h2>
 
                             </div>
@@ -365,33 +351,25 @@ export default function CountHpp() {
 
                                 <input
                                     type="number"
-                                    value={manualPrice}
-                                    onChange={(e) =>
-                                        setManualPrice(Number(e.target.value))
-                                    }
+
                                     placeholder="Masukkan harga jual"
                                     className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-black focus:outline-none"
                                 />
-
                             </div>
-
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
                             <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200">
-
                                 <p className="text-sm text-gray-500">
                                     HPP per Produk
                                 </p>
 
                                 <h2 className="text-2xl font-black mt-2">
-                                    Rp {hppPerProduct.toLocaleString('id-ID')}
+                                    Rp
                                 </h2>
-
                             </div>
 
-                            <div className={`rounded-2xl p-5 text-white ${manualProfit >= 0
+                            {/* <div className={`rounded-2xl p-5 text-white ${manualProfit >= 0
                                 ? 'bg-black'
                                 : 'bg-red-500'
                                 }`}>
@@ -403,104 +381,11 @@ export default function CountHpp() {
                                 <h2 className="text-3xl font-black mt-2">
                                     Rp {manualProfit.toLocaleString('id-ID')}
                                 </h2>
-
-                            </div>
-
+                            </div> */}
                         </div>
-
                     </div>
-
                 )}
-
             </div>
-
-            {/* COST COMPONENTS */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
-
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-
-                    <div className="flex items-center gap-3">
-
-                        <div className="bg-black p-3 rounded-xl">
-                            <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                        </div>
-
-                        <div>
-                            <h2 className="text-xl font-bold text-black">
-                                Komponen Biaya
-                            </h2>
-
-                            <p className="text-sm text-gray-500">
-                                Breakdown biaya produksi produk
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition w-full sm:w-auto"
-                    >
-                        <Plus className="w-5 h-5" />
-                        Tambah Item
-                    </button>
-
-                </div>
-
-                <div className="space-y-4">
-
-                    {[
-                        {
-                            name: 'Tepung Terigu',
-                            type: 'Material',
-                            qty: '2 Kg',
-                            subtotal: 'Rp 30.000'
-                        },
-                        {
-                            name: 'Gaji Produksi',
-                            type: 'Labor',
-                            qty: '3 Jam',
-                            subtotal: 'Rp 50.000'
-                        },
-                        {
-                            name: 'Listrik',
-                            type: 'Overhead',
-                            qty: '-',
-                            subtotal: 'Rp 20.000'
-                        }
-                    ].map((item, index) => (
-
-                        <div
-                            key={index}
-                            className="border-2 border-gray-200 rounded-2xl p-5 hover:shadow-md transition"
-                        >
-
-                            <div className="flex items-start justify-between">
-
-                                <div>
-                                    <h2 className="font-bold text-lg">
-                                        {item.name}
-                                    </h2>
-
-                                    <p className="text-sm text-gray-500 mt-1">
-                                        {item.type} • {item.qty}
-                                    </p>
-                                </div>
-
-                                <h2 className="text-2xl font-black">
-                                    {item.subtotal}
-                                </h2>
-
-                            </div>
-
-                        </div>
-
-                    ))}
-
-                </div>
-
-            </div>
-
         </div>
     );
 }
