@@ -9,10 +9,7 @@ export interface ProductItemType {
 
 export interface ProductType {
     productName: string;
+    qty: number;
     id: string;
     costs: ProductItemType[];
-}
-
-interface CountHppProps {
-    detailProduct: ProductType | null;
 }

@@ -41,6 +41,10 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
         total: item.total,
     }));
 
+    let hppPerProduct = 0;
+
+    hppPerProduct = totalCost / (detailProduct?.qty ?? 1);
+
     console.log("Mapped Items for HPP Calculation:", mappingNewData);
 
     return (
@@ -114,7 +118,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                         </p>
 
                         <h2 className="text-xl font-bold mt-2">
-                            Roti Tawar Premium
+                            {detailProduct?.productName ?? "Nama Produk"}
                         </h2>
 
                         <p className="text-xs text-gray-400 mt-2">
@@ -129,7 +133,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                         </p>
 
                         <h2 className="text-2xl font-black mt-2">
-                            8 Item
+                            {mappingNewData.length} Item
                         </h2>
 
                         <p className="text-xs text-gray-400 mt-2">
@@ -144,7 +148,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                         </p>
 
                         <h2 className="text-2xl font-black mt-2">
-                            Rp
+                            Rp. {totalCost.toLocaleString('id-ID')}
                         </h2>
 
                         <p className="text-xs text-gray-400 mt-2 leading-relaxed">
@@ -159,7 +163,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                         </p>
 
                         <h2 className="text-3xl font-black mt-2">
-                            Rp
+                            Rp. {hppPerProduct.toLocaleString('id-ID')}
                         </h2>
 
                         <p className="text-xs text-gray-400 mt-2">
@@ -297,7 +301,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                                 </p>
 
                                 <h2 className="text-2xl font-black mt-2">
-                                    Rp
+                                    Rp {hppPerProduct.toLocaleString('id-ID')}
                                 </h2>
 
                             </div>
@@ -321,8 +325,8 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                                 </p>
 
                                 <h2 className="text-3xl font-black mt-2">
-                                    Rp
-                                </h2>
+                                    Rp {((hppPerProduct * margin) / 100 + hppPerProduct).toLocaleString('id-ID')}
+                                </h2>  
 
                             </div>
 

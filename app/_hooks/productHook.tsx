@@ -13,6 +13,7 @@ export default function ProductHook() {
     const { control, register, handleSubmit, formState: { errors }, setError } = useForm<ProductType>({
         defaultValues: {
             productName: "",
+            qty: 0,
             costs: [
                 {
                     name: "",

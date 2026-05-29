@@ -1,7 +1,8 @@
 import axios from "axios";
 import api from "../_api/interceptor";
+import { ProductType } from "../_types/productType";
 
-export const createProduct = async (productData: any) => {
+export const createProduct = async (productData: ProductType) => {
     try {
         const response = await api.post(`/product`, productData);
         return response.data

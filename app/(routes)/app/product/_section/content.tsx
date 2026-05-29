@@ -11,7 +11,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Content() {
-    const { handleSubmit, handleAddItem, onSubmit, register, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp, detailProduct } = ProductHook();
+    const { handleSubmit, handleAddItem, onSubmit, register, errors, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp, detailProduct } = ProductHook();
     const [showAction, setShowAction] = useState(false);
 
     const toggleAction = () => {
@@ -84,6 +84,32 @@ export default function Content() {
                                     placeholder="Contoh: Roti Tawar Premium"
                                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition text-base sm:text-lg"
                                 />
+                                {errors.productName && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.productName.message}
+                                    </p>
+                                )}
+                            </div>
+                            <div className="mt-2">
+                                <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">
+                                    Jumlah Produksi
+                                </label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    {...register("qty", {
+                                        valueAsNumber: true,
+                                        required: "Jumlah item wajib diisi",
+                                    })}
+
+                                    placeholder="0"
+                                    className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
+                                />
+                                {errors.qty && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.qty.message}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
@@ -142,6 +168,11 @@ export default function Content() {
                                                         placeholder="Contoh: Tepung Terigu"
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
                                                     />
+                                                    {errors.costs?.[index]?.name && (
+                                                        <p className="text-red-500 text-sm mt-1">
+                                                            {errors.costs[index].name?.message}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 <div>
@@ -157,7 +188,13 @@ export default function Content() {
                                                         <option value="material">Material</option>
                                                         <option value="labor">Labor</option>
                                                         <option value="overhead">Overhead</option>
+                                                        <option value="packaging">Packaging</option>
                                                     </select>
+                                                    {errors.costs?.[index]?.type && (
+                                                        <p className="text-red-500 text-sm mt-1">
+                                                            {errors.costs[index].type?.message}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 <div>
@@ -179,7 +216,15 @@ export default function Content() {
                                                         <option value="box">Box</option>
                                                         <option value="meter">Meter (m)</option>
                                                         <option value="hour">Jam (hour)</option>
+                                                        <option value="botol">Botol</option>
+                                                        <option value="tabung">Tabung</option>
+                                                        <option value="orang">Orang</option>
                                                     </select>
+                                                    {errors.costs?.[index]?.satuan && (
+                                                        <p className="text-red-500 text-sm mt-1">
+                                                            {errors.costs[index].satuan?.message}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 <div>
@@ -197,6 +242,11 @@ export default function Content() {
                                                         placeholder="0"
                                                         className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
                                                     />
+                                                    {errors.costs?.[index]?.qty && (
+                                                        <p className="text-red-500 text-sm mt-1">
+                                                            {errors.costs[index].qty?.message}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 <div>
@@ -218,6 +268,11 @@ export default function Content() {
                                                             placeholder="0"
                                                             className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-black focus:outline-none transition"
                                                         />
+                                                        {errors.costs?.[index]?.price && (
+                                                            <p className="text-red-500 text-sm mt-1">
+                                                                {errors.costs[index].price?.message}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
