@@ -10,6 +10,7 @@ import {
     BadgeDollarSign
 } from "lucide-react";
 import { ProductType } from "@/app/_types/productType";
+import { FaBowlFood } from "react-icons/fa6";
 
 
 export default function CountHpp({ detailProduct }: { detailProduct: ProductType | null }) {
@@ -78,7 +79,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                     </div>
 
                     <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 mt-5 border border-white/10">
-                        <p className="text-sm sm:text-base text-gray-100 leading-relaxed min-h-[60px]">
+                        <p className="text-sm sm:text-base text-gray-100 leading-relaxed min-h-16">
                             {fullText}
                             <span className="animate-pulse">|</span>
                         </p>
@@ -326,7 +327,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
 
                                 <h2 className="text-3xl font-black mt-2">
                                     Rp {((hppPerProduct * margin) / 100 + hppPerProduct).toLocaleString('id-ID')}
-                                </h2>  
+                                </h2>
 
                             </div>
 
@@ -389,6 +390,10 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                         </div>
                     </div>
                 )}
+                <div className="cursor-pointer flex w-full border items-center justify-center gap-2 mt-4 py-2 rounded-sm hover:bg-black hover:text-white transition-colors">
+                    <FaBowlFood />
+                    <button>Simpan Ke Produk</button>
+                </div>
             </div>
         </div>
     );
