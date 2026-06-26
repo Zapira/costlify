@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { ProductType } from "@/app/_types/productType";
 import { FaBowlFood } from "react-icons/fa6";
+import CreateHppHook from "@/app/_hooks/createHppHook";
 
 
 export default function CountHpp({ detailProduct }: { detailProduct: ProductType | null }) {
@@ -47,6 +48,18 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
         return hppPerProduct + (hppPerProduct * margin) / 100;
     }, [hppPerProduct, margin]);
 
+    const saveHppCalculation = async () => {
+        try {
+            await CreateHppHook().handleSubmit(detailProduct?.id ?? "", {
+                id_product: detailProduct?.id ?? "",
+                profit_margin: margin,
+                calculation_type: "auto",
+            });
+            console.log("HPP Calculation saved successfully.");
+        } catch (error) {
+            console.error("Error saving HPP Calculation:", error);
+        }
+    }
 
     return (
         <div className="bg-linear-to-br from-gray-50 to-gray-100 mt-4 rounded-xl p-2 sm:p-4">
@@ -392,7 +405,9 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                 )}
                 <div className="cursor-pointer flex w-full border items-center justify-center gap-2 mt-4 py-2 rounded-sm hover:bg-black hover:text-white transition-colors">
                     <FaBowlFood />
-                    <button>Simpan Ke Produk</button>
+                    <button onClick={saveHppCalculation} className="font-semibold">
+                        Simpan Ke Produk
+                    </button>
                 </div>
             </div>
         </div>

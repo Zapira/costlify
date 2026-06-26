@@ -40,3 +40,12 @@ export const getProductById = async (id: string) => {
         }
     }
 }
+
+export const createHppCalculation = async (productId: string, hppData: any) => {
+    try {
+        const response = await api.post(`/product/create-hpp`,{...hppData, productId});
+        return response.data;
+    } catch (error) {
+        console.error("Error in createHppCalculation:", error.response);
+    }
+}
