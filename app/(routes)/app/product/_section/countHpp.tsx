@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     Layers,
     PackagePlus,
@@ -15,38 +15,38 @@ import { FaBowlFood } from "react-icons/fa6";
 
 export default function CountHpp({ detailProduct }: { detailProduct: ProductType | null }) {
 
-
     const [mode, setMode] = useState<'auto' | 'manual'>('auto');
     const [margin, setMargin] = useState(30);
 
     const fullText =
         "Hitung HPP membantu menentukan harga jual ideal berdasarkan total biaya produksi, jumlah hasil produksi, dan margin keuntungan.";
 
-    console.log("Detail Product in CountHpp:", detailProduct);
-
-    let totalCost = 0;
-
-
-    if (detailProduct) {
-        totalCost = (detailProduct.costs ?? []).reduce((costAcc, item) => {
-            return costAcc + (item.total ?? 0);
+    const totalCost = useMemo(() => {
+        return (detailProduct?.costs ?? []).reduce((acc, item) => {
+            return acc + (item.total ?? 0);
         }, 0);
-    }
+    }, [detailProduct?.costs]);
 
-    const mappingNewData = (detailProduct?.costs ?? []).map((item) => ({
-        name: item.name,
-        type: item.type,
-        satuan: item.satuan,
-        qty: item.qty,
-        price: item.price,
-        total: item.total,
-    }));
+    const mappingNewData = useMemo(() => {
+        return (detailProduct?.costs ?? []).map((item) => ({
+            name: item.name,
+            type: item.type,
+            satuan: item.satuan,
+            qty: item.qty,
+            price: item.price,
+            total: item.total,
+        }));
+    }, [detailProduct?.costs]);
 
-    let hppPerProduct = 0;
 
-    hppPerProduct = totalCost / (detailProduct?.qty ?? 1);
+    const hppPerProduct = useMemo(() => {
+        return totalCost / (detailProduct?.qty ?? 1);
+    }, [totalCost, detailProduct?.qty]);
 
-    console.log("Mapped Items for HPP Calculation:", mappingNewData);
+    const sellingPrice = useMemo(() => {
+        return hppPerProduct + (hppPerProduct * margin) / 100;
+    }, [hppPerProduct, margin]);
+
 
     return (
         <div className="bg-linear-to-br from-gray-50 to-gray-100 mt-4 rounded-xl p-2 sm:p-4">
@@ -326,7 +326,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
                                 </p>
 
                                 <h2 className="text-3xl font-black mt-2">
-                                    Rp {((hppPerProduct * margin) / 100 + hppPerProduct).toLocaleString('id-ID')}
+                                    Rp {sellingPrice.toLocaleString('id-ID')}
                                 </h2>
 
                             </div>
