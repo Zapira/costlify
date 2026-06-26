@@ -55,6 +55,7 @@ export default function ProductHook() {
                 toast.success("Produk berhasil ditambahkan!");
                 setTimeout(() => {
                     setPage('list');
+                    fetchProducts();
                 }, 1000);
             }
             return response;
@@ -90,8 +91,6 @@ export default function ProductHook() {
             if (response.message === "Product retrieved successfully") {
                 setProducts(response.data);
             }
-
-
         } catch (error) {
             console.error("Error fetching products:", error);
         }finally {
