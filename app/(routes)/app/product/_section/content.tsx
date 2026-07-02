@@ -18,6 +18,27 @@ export default function Content() {
         setShowAction(!showAction);
     }
 
+    const totalMaterial = products.reduce((total, product) => {
+        const materialCost = product.costs
+            .filter(cost => cost.type === 'material')
+            .reduce((sum, cost) => sum + (cost.total ?? 0), 0)
+        return total + materialCost;
+    }, 0);
+
+    const totalLabor = products.reduce((total, product) => {
+        const laborCost = product.costs
+            .filter(cost => cost.type === 'labor')
+            .reduce((sum, cost) => sum + (cost.total ?? 0), 0)
+        return total + laborCost;
+    }, 0);
+
+    const totalOverhead = products.reduce((total, product) => {
+        const overheadCost = product.costs
+            .filter(cost => cost.type === 'overhead')
+            .reduce((sum, cost) => sum + (cost.total ?? 0), 0)
+        return total + overheadCost;
+    }, 0);
+
     return (
         <div className="mt-5">
             <div className="bg-white rounded-2xl shadow-sm border-gray-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
@@ -293,7 +314,7 @@ export default function Content() {
                     </div>
                 </div>
             ) : page === 'hpp' ? (
-                <CountHpp detailProduct={detailProduct} />
+                <CountHpp key={detailProduct?.id} detailProduct={detailProduct} />
             ) : (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
@@ -335,7 +356,7 @@ export default function Content() {
                                                 </h2>
 
                                                 <p className="text-sm text-slate-500 mt-1">
-                                                    1 komponen biaya
+                                                    komponen biaya
                                                 </p>
                                             </div>
 
@@ -345,7 +366,7 @@ export default function Content() {
                                         </div>
                                         <div className="relative">
                                             <div className={`absolute -top-16 right-5 bg-white border border-gray-200 rounded-lg shadow-lg p-2 ${showAction ? 'block' : 'hidden'}`}>
-                                                <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                                <button  onClick={() => handleOpenCountHpp(product.id)} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
                                                     <Pencil size={16} />
                                                     Edit
                                                 </button>
@@ -366,7 +387,7 @@ export default function Content() {
                                                 </div>
 
                                                 <span className="font-semibold text-black">
-                                                    Rp 144
+                                                    {totalMaterial.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                 </span>
                                             </div>
 
@@ -374,12 +395,12 @@ export default function Content() {
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                                                     <span className="text-sm text-slate-600">
-                                                        Labor
+                                                        {totalLabor.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                     </span>
                                                 </div>
 
                                                 <span className="font-semibold text-black">
-                                                    Rp 0
+                                                    {totalLabor.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                 </span>
                                             </div>
 
@@ -387,12 +408,12 @@ export default function Content() {
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
                                                     <span className="text-sm text-slate-600">
-                                                        Overhead
+                                                        {totalOverhead.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                     </span>
                                                 </div>
 
                                                 <span className="font-semibold text-black">
-                                                    Rp 0
+                                                    {totalOverhead.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                 </span>
                                             </div>
                                         </div>
@@ -414,10 +435,22 @@ export default function Content() {
                             </div> */}
 
                                         {/* Actions */}
-                                        <button onClick={() => handleOpenCountHpp(product.id)} className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5">
-                                            <Eye size={18} />
-                                            <span className="hidden sm:block">Hitung HPP</span>
-                                        </button>
+                                        {product.already_generate_hpp ? (
+                                            <div className="mt-5 rounded-xl border p-4 bg-gray-50">
+                                                <span>Rekomendasi Harga Jual</span>
+                                                <h1 className="text-3xl font-black text-black mt-2">
+                                                    {product.hpp.SellingPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                                                </h1>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleOpenCountHpp(product.id)}
+                                                className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5"
+                                            >
+                                                <Eye size={18} />
+                                                <span className="hidden sm:block">Hitung HPP</span>
+                                            </button>
+                                        )}
 
                                         {/* Footer */}
                                         <div className="border-t border-slate-200 mt-5 pt-4">

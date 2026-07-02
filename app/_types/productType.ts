@@ -12,4 +12,11 @@ export interface ProductType {
     qty: number;
     id: string;
     costs: ProductItemType[];
+    hpp: HppType;
+    already_generate_hpp?: boolean;
+}
+
+export interface HppType {
+    SellingPrice: number;
+    ProfitMargin: number;
 }

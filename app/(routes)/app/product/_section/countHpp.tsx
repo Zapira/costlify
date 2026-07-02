@@ -17,7 +17,9 @@ import CreateHppHook from "@/app/_hooks/createHppHook";
 export default function CountHpp({ detailProduct }: { detailProduct: ProductType | null }) {
 
     const [mode, setMode] = useState<'auto' | 'manual'>('auto');
-    const [margin, setMargin] = useState(30);
+    const [margin, setMargin] = useState(
+        detailProduct?.hpp?.ProfitMargin ?? 0
+    );
 
     const fullText =
         "Hitung HPP membantu menentukan harga jual ideal berdasarkan total biaya produksi, jumlah hasil produksi, dan margin keuntungan.";
@@ -60,6 +62,7 @@ export default function CountHpp({ detailProduct }: { detailProduct: ProductType
             console.error("Error saving HPP Calculation:", error);
         }
     }
+
 
     return (
         <div className="bg-linear-to-br from-gray-50 to-gray-100 mt-4 rounded-xl p-2 sm:p-4">

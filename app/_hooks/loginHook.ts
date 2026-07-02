@@ -34,13 +34,13 @@ export default function LoginHook() {
                 }else{
                     setError("root.serverError", {
                         type: "server",
-                        message: "Server sedang maintenance, silakan coba lagi nanti",
+                        message: "Email atau password salah",
                     });
                 }
             } else {
                 setError("root.serverError", {
                     type: "server",
-                    message: "Unexpected error",
+                    message: "Server error. Please try again later.",
                 });
             }
         }

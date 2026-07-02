@@ -20,7 +20,9 @@ export async function proxy(req: NextRequest) {
             Cookie: `access_token=${token}`,
         },
     });
-    console.log(res)
+    
+    const data = await res.json().catch(() => null);
+
 
     const isValid = res.status === 200;
 
