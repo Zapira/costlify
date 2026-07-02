@@ -11,33 +11,12 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Content() {
-    const { handleSubmit, handleAddItem, onSubmit, register, errors, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp, detailProduct } = ProductHook();
-    const [showAction, setShowAction] = useState(false);
+    const { handleSubmit, handleAddItem, onSubmit, register, errors, fields, remove, infoCard, page, setPage, products, loading, handleOpenCountHpp, detailProduct, handleEditProduct, editProductId } = ProductHook();
+    const [openActionId, setOpenActionId] = useState<string | number | null>(null);
 
-    const toggleAction = () => {
-        setShowAction(!showAction);
-    }
-
-    const totalMaterial = products.reduce((total, product) => {
-        const materialCost = product.costs
-            .filter(cost => cost.type === 'material')
-            .reduce((sum, cost) => sum + (cost.total ?? 0), 0)
-        return total + materialCost;
-    }, 0);
-
-    const totalLabor = products.reduce((total, product) => {
-        const laborCost = product.costs
-            .filter(cost => cost.type === 'labor')
-            .reduce((sum, cost) => sum + (cost.total ?? 0), 0)
-        return total + laborCost;
-    }, 0);
-
-    const totalOverhead = products.reduce((total, product) => {
-        const overheadCost = product.costs
-            .filter(cost => cost.type === 'overhead')
-            .reduce((sum, cost) => sum + (cost.total ?? 0), 0)
-        return total + overheadCost;
-    }, 0);
+    const toggleAction = (id: string | number) => {
+        setOpenActionId(prev => prev === id ? null : id);
+    };
 
     return (
         <div className="mt-5">
@@ -346,83 +325,102 @@ export default function Content() {
                             ))
                         ) : (
                             <>
-                                {products.map((product, index) => (
-                                    <div key={index} className="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                                {products.map((product, index) => {
+                                    const totalMaterial = product.costs
+                                        .filter(cost => cost.type === 'material')
+                                        .reduce((sum, cost) => sum + (cost.total ?? 0), 0);
 
-                                        <div className="flex items-start justify-between">
-                                            <div>
-                                                <h2 className="text-xl font-bold text-black">
-                                                    {product.productName}
-                                                </h2>
 
-                                                <p className="text-sm text-slate-500 mt-1">
-                                                    komponen biaya
-                                                </p>
+                                    const totalLabor = product.costs
+                                        .filter(cost => cost.type === 'labor')
+                                        .reduce((sum, cost) => sum + (cost.total ?? 0), 0);
+
+                                    const totalOverhead = product.costs
+                                        .filter(cost => cost.type === 'overhead')
+                                        .reduce((sum, cost) => sum + (cost.total ?? 0), 0);
+
+
+                                    return (
+                                        <div key={index} className="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+
+                                            <div className="flex items-start justify-between">
+                                                <div>
+                                                    <h2 className="text-xl font-bold text-black">
+                                                        {product.productName}
+                                                    </h2>
+
+                                                    <p className="text-sm text-slate-500 mt-1">
+                                                        komponen biaya
+                                                    </p>
+                                                </div>
+
+                                                <button onClick={() => toggleAction(product.id)} className="text-slate-500 hover:text-black transition cursor-pointer">
+                                                    <BsThreeDotsVertical size={18} />
+                                                </button>
+                                            </div>
+                                            <div className="relative">
+                                                <div className={`absolute -top-16 right-5 bg-white border border-gray-200 rounded-lg shadow-lg p-2 ${openActionId === product.id ? 'block' : 'hidden'}`}>
+                                                    <button onClick={() => handleEditProduct(product)} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                                        <Pencil size={16} />
+                                                        Edit Data Produk
+                                                    </button>
+                                                    <button onClick={() => handleOpenCountHpp(product.id)} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                                        <Pencil size={16} />
+                                                        Edit HPP
+                                                    </button>
+                                                    <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
+                                                        <Trash2 size={16} />
+                                                        Hapus
+                                                    </button>
+                                                </div>
                                             </div>
 
-                                            <button onClick={toggleAction} className="text-slate-500 hover:text-black transition cursor-pointer">
-                                                <BsThreeDotsVertical size={18} />
-                                            </button>
-                                        </div>
-                                        <div className="relative">
-                                            <div className={`absolute -top-16 right-5 bg-white border border-gray-200 rounded-lg shadow-lg p-2 ${showAction ? 'block' : 'hidden'}`}>
-                                                <button  onClick={() => handleOpenCountHpp(product.id)} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
-                                                    <Pencil size={16} />
-                                                    Edit
-                                                </button>
-                                                <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded">
-                                                    <Trash2 size={16} />
-                                                    Hapus
-                                                </button>
-                                            </div>
-                                        </div>
+                                            <div className="mt-5 space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                                                        <span className="text-sm text-slate-600">
+                                                            Material
+                                                        </span>
+                                                    </div>
 
-                                        <div className="mt-5 space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
-                                                    <span className="text-sm text-slate-600">
-                                                        Material
+                                                    <span className="font-semibold text-black">
+                                                        {totalMaterial.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                     </span>
                                                 </div>
 
-                                                <span className="font-semibold text-black">
-                                                    {totalMaterial.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-                                                </span>
-                                            </div>
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                                                        <span className="text-sm text-slate-600">
+                                                            Labor
+                                                        </span>
+                                                    </div>
 
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
-                                                    <span className="text-sm text-slate-600">
+                                                    <span className="font-semibold text-black">
                                                         {totalLabor.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                     </span>
                                                 </div>
 
-                                                <span className="font-semibold text-black">
-                                                    {totalLabor.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-                                                </span>
-                                            </div>
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                                                        <span className="text-sm text-slate-600">
+                                                            Overhead
+                                                        </span>
+                                                    </div>
 
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                                                    <span className="text-sm text-slate-600">
+                                                    <span className="font-semibold text-black">
                                                         {totalOverhead.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                     </span>
                                                 </div>
-
-                                                <span className="font-semibold text-black">
-                                                    {totalOverhead.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-                                                </span>
                                             </div>
-                                        </div>
 
-                                        {/* Divider */}
-                                        <div className="border-t border-slate-200 my-5"></div>
+                                            {/* Divider */}
+                                            <div className="border-t border-slate-200 my-5"></div>
 
-                                        {/* Total */}
-                                        {/* <div className="flex items-end justify-between">
+                                            {/* Total */}
+                                            {/* <div className="flex items-end justify-between">
                                 <div>
                                     <span className="text-sm font-semibold text-slate-600">
                                         Total HPP
@@ -434,32 +432,35 @@ export default function Content() {
                                 </h1>
                             </div> */}
 
-                                        {/* Actions */}
-                                        {product.already_generate_hpp ? (
-                                            <div className="mt-5 rounded-xl border p-4 bg-gray-50">
-                                                <span>Rekomendasi Harga Jual</span>
-                                                <h1 className="text-3xl font-black text-black mt-2">
-                                                    {product.hpp.SellingPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-                                                </h1>
-                                            </div>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleOpenCountHpp(product.id)}
-                                                className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5"
-                                            >
-                                                <Eye size={18} />
-                                                <span className="hidden sm:block">Hitung HPP</span>
-                                            </button>
-                                        )}
+                                            {/* Actions */}
+                                            {product.already_generate_hpp ? (
+                                                <div className="mt-5 rounded-xl border p-4 bg-gray-50">
+                                                    <span>Rekomendasi Harga Jual</span>
+                                                    <h1 className="text-3xl font-black text-black mt-2">
+                                                        {product.hpp.SellingPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                                                    </h1>
+                                                </div>
+                                            ) : (
+                                                <button
+                                                    onClick={() => handleOpenCountHpp(product.id)}
+                                                    className="flex items-center justify-center cursor-pointer gap-2 bg-blue-50 hover:bg-blue-100 text-blue-500 py-3 rounded-xl font-semibold transition w-full mt-5"
+                                                >
+                                                    <Eye size={18} />
+                                                    <span className="hidden sm:block">Hitung HPP</span>
+                                                </button>
+                                            )}
 
-                                        {/* Footer */}
-                                        <div className="border-t border-slate-200 mt-5 pt-4">
-                                            <p className="text-xs text-slate-400">
-                                                Terakhir diupdate: 19 Mei 2026
-                                            </p>
+                                            {/* Footer */}
+                                            <div className="border-t border-slate-200 mt-5 pt-4">
+                                                <p className="text-xs text-slate-400">
+                                                    Terakhir diupdate: 19 Mei 2026
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                }
+
+                                )}
                             </>
                         )}
                     </div>

@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { Box, Layers, PackagePlus } from "lucide-react";
 
 export default function ProductHook() {
-    const { control, register, handleSubmit, formState: { errors }, setError } = useForm<ProductType>({
+    const { control, register, handleSubmit, formState: { errors }, setError, reset } = useForm<ProductType>({
         defaultValues: {
             productName: "",
             qty: 0,
@@ -27,6 +27,7 @@ export default function ProductHook() {
     });
     const [products, setProducts] = useState<ProductType[]>([]);
     const [detailProduct, setDetailProduct] = useState<ProductType | null>(null);
+    const [editProductId, setEditProductId] = useState<string | null>(null);
 
     const [page, setPage] = useState<'list' | 'add' | 'hpp'>('list');
     const [loading, setLoading] = useState(true);
@@ -45,6 +46,24 @@ export default function ProductHook() {
             price: 0,
         })
     }
+
+    const handleEditProduct = (product: ProductType) => {
+        setEditProductId(product.id ?? null);
+
+        reset({
+            productName: product.productName,
+            qty: product.qty,
+            costs: product.costs?.map((cost) => ({
+                name: cost.name,
+                type: cost.type,
+                satuan: cost.satuan,
+                qty: cost.qty,
+                price: cost.price,
+            })) ?? [],
+        });
+
+        setPage("add");
+    };
 
     const onSubmit = async (data: ProductType) => {
         try {
@@ -93,7 +112,7 @@ export default function ProductHook() {
             }
         } catch (error) {
             console.error("Error fetching products:", error);
-        }finally {
+        } finally {
             setLoading(false);
         }
     }
@@ -136,7 +155,7 @@ export default function ProductHook() {
         }
 
     }
-    
+
 
     useEffect(() => {
         fetchProducts();
@@ -157,5 +176,7 @@ export default function ProductHook() {
         loading,
         handleOpenCountHpp,
         detailProduct,
+        handleEditProduct,
+        editProductId,
     }
 }
